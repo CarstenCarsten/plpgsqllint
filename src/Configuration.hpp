@@ -3,12 +3,11 @@
 
 #include <string>
 
-using namespace std;
-
 class Configuration {
         public:
                 Configuration();
-                string getInputFile(string filename);
+                void parseCommandline(int argc, char* argv[]);
+                std::string getInputFile(std::string filename);
 };
 
 #endif
