@@ -1,0 +1,4 @@
+plpgsqllint
+===========
+
+Linter for plpgsql
