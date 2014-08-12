@@ -4,10 +4,12 @@
 #include <string>
 
 class Configuration {
+        private:
+                std::string inputfilename;
         public:
                 Configuration();
                 void parseCommandline(int argc, char* argv[]);
-                std::string getInputFile(std::string filename);
+                std::string getInputfilename();
 };
 
 #endif

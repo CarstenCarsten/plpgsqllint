@@ -26,10 +26,10 @@ void Configuration::parseCommandline(int argc, char* argv[]) {
                 }
 
                 if (vm.count("filename")) {
-                        std::cout << "Input filename is "
-                        << vm["filename"].as<std::string>() << ".\n";
+                        inputfilename = vm["filename"].as<std::string>();
                 } else {
                         std::cout << "input filename was not set.\n";
+                        exit(1);
                 }
         } catch(std::exception& e) {
                 std::cerr << "error: " << e.what() << "\n";
@@ -39,7 +39,7 @@ void Configuration::parseCommandline(int argc, char* argv[]) {
         }
 }
 
-std::string Configuration::getInputFile(std::string filename) {
-   return "asdf";
+std::string Configuration::getInputfilename() {
+                return inputfilename;
 }
 
