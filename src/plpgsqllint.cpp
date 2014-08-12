@@ -1,12 +1,15 @@
 #include "Configuration.hpp"
 #include "Filereader.hpp"
+#include "Parser.hpp"
 
 #include <iostream>
 
 int main(int argc, char* argv[]) {
         Configuration configuration;
-        configuration.parseCommandline(argc,argv);
-        std::cout << configuration.getInputfilename();
         Filereader filereader;
-        filereader.readFile(configuration.getInputfilename());
+
+        configuration.parseCommandline(argc,argv);
+        std::vector<std::string> tokens = filereader.readFile(configuration.getInputfilename());
+        Parser parser = Parser(tokens);
+        parser.parse();
 }

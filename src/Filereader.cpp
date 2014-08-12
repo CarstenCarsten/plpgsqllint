@@ -1,7 +1,7 @@
 #include "Filereader.hpp"
 
 #include <fstream>
-#include <iostream> // TODO just for cout could be removed
+//#include <iostream> // TODO just for cout could be removed
 
 Filereader::Filereader() {
 }
@@ -22,7 +22,7 @@ bool Filereader::isAlphanumericOrUnderscore(char ch) {
 std::vector<std::string> Filereader::readFile(std::string filename) {
         std::vector<std::string> tokens; // has all the strings conveniently seperated "HELLO  WORLD" -> "HELLO","   ","WORLD"
         char ch   = ' '; // current character that is added to the token
-        char prev = ' '; // the previous element
+        char prev = ' '; // the previous character
         std::fstream fin(filename.c_str(), std::fstream::in); 
         std::string token; // the element that will be added to the tokens
 
@@ -49,13 +49,17 @@ std::vector<std::string> Filereader::readFile(std::string filename) {
                           ch == '='  || ch == ':' || ch == '/'  || ch == '*' || ch == '\n' ||
                           ch == '\r' || ch == ' ' || ch == '\t' || ch == '-' || ch == '\'' ||
                           ch == '!'  || ch == '%' || ch == '|'  || ch == '#' || ch == '$') {
-                        std::cout << token << std::endl;
-                        tokens.push_back(token);
+//                        std::cout << token << std::endl;
+                        if(token.length() > 0) {
+                                tokens.push_back(token);
+                        }
                         token = std::string("");
                         token.append(1,ch);
                 } else if(isAlphanumericOrUnderscore(ch) && !isAlphanumericOrUnderscore(prev)){
-                        std::cout << token << std::endl;
-                        tokens.push_back(token);
+//                        std::cout << token << std::endl;
+                        if(token.length() > 0) {
+                                tokens.push_back(token);
+                        }
                         token = std::string("");
                         token.append(1,ch);
                 } else {
@@ -63,8 +67,10 @@ std::vector<std::string> Filereader::readFile(std::string filename) {
                 }
                 prev = ch;
         }
-        std::cout << token << std::endl;
-        tokens.push_back(token);        
+//        std::cout << token << std::endl;
+        if(token.length() > 0) {
+                tokens.push_back(token);
+        }    
 
         return tokens;
 }

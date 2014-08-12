@@ -1,0 +1,13 @@
+Header file order (taken from stackoverflow)
+-------------------------------------------------------------------------------
+My personal preference is to go from local to global, each subsection in 
+alphabetical order, i.e.:
+
+1. h file corresponding to this cpp file (if applicable)
+2. headers from the same component,
+3. headers from other components,
+4. system headers.
+
+My rationale for 1. is that it should prove that each header (for which there
+is a cpp) can be #included without prerequisites. And the rest just seems to
+flow logically from there.
