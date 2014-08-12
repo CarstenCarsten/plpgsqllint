@@ -6,7 +6,8 @@
 
 class Filereader {
         private:
-                void parse(char ch);
+                bool isSeperator(char ch);
+                bool isNewline(char ch);
         public:
                 Filereader();
                 std::vector<std::string> readFile(std::string filename);
