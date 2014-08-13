@@ -9,7 +9,7 @@ class Parser {
                 std::vector<Parser> children;
         protected:
                 Parser();
-                std::string token;
+                std::string token;  // TODO has to go, i need direkt acces to the tokens array
 
                 bool isDo();
                 bool isEndDollarQuote(std::string startDollarQuote);
@@ -31,8 +31,8 @@ class Parser {
                 std::string readDollarQuote();
                 void skipWhitespacesAndNewlines();
 
-                static std::vector<std::string> tokens;
-                static unsigned int position;
+                static std::vector<std::string> tokens; // TODO has to become ptr, and given to children
+                static unsigned int position; // TODO has to become ptr, and given to children
         public:
                 Parser(std::vector<std::string> tokensvector);
                 void parse();
