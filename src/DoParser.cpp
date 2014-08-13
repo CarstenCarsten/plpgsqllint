@@ -6,17 +6,34 @@ DoParser::DoParser() {
 }
 
 void DoParser::parse() {
-        while(position < tokens.size()) {
-                std::string token = tokens[position++];
-        
-                if(isWhitespace(token)) {
-                        // NOOP
-                } else if(isDo(token)) {
-                        DoParser doParser;
-                        children.push_back(doParser);
-                        doParser.parse();
-                } else {
-                        std::cout << token;
+        std::string token = tokens[position++];
+
+        // skip possible whitespace and newlines. the do statement was read by the parent
+        while(position < tokens.size() && (isWhitespace(token) || isNewline(token))) {
+                token = tokens[position++];
+        }
+
+        // check for the optional language field
+        if(position < tokens.size() && isLanguage(token)) {
+                // a language has been set
+                token = tokens[position++];
+
+                // skip possible ws and nl
+                while(position < tokens.size() && (isWhitespace(token) || isNewline(token))) {
+                        token = tokens[position++];
+                }
+                
+                // check the lang_name and skip to the code block
+                if(position < tokens.size() && isPlpgsql(token)) {
+                        token = tokens[position++];
+                        language = "plpgsql";
+                        while(position < tokens.size() && (isWhitespace(token) || isNewline(token))) {
+                                token = tokens[position++];
+                        }
+                // it is allowed to write the language parameter as string literal
+                } else if(position < tokens.size() && isStringLiteral(token)) {
+                        token = consumeStringLiteral();
+                        
                 }
         }
         std::cout << tokens[position++];

@@ -3,6 +3,7 @@
 
 #include "Parser.hpp"
 
+#include <string>
 #include <vector>
 
 class DoParser: public Parser {
@@ -10,6 +11,7 @@ class DoParser: public Parser {
                 std::vector<Parser> children;
         protected:
         public:
+                std::string language;
                 DoParser();
                 void parse();
 };
