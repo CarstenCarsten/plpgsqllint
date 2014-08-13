@@ -11,7 +11,7 @@ class DoParser: public Parser {
                 std::vector<Parser> children;
         protected:
         public:
-                DoParser();
+                DoParser(std::vector<std::string> * tokens, unsigned int * pos);
                 std::string language;
                 void parse();
 };

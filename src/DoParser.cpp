@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-DoParser::DoParser() {
+DoParser::DoParser(std::vector<std::string> * tokens, unsigned int * pos) {
+        this->tokens = tokens;
+        this->pos = pos;
 }
 
 void DoParser::parse() {
@@ -38,5 +40,5 @@ void DoParser::parse() {
                 // 2. in case of single line convert '' to '
                 // 3. create a new Parser Object with all the tokens in the middle
         }
-        std::cout << tokens[position++];
+      //  std::cout << tokens[position++];
 }

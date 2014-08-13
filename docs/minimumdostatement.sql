@@ -1,1 +1,1 @@
-                    		 	 do $bla$ declare begin perform null; end; $bla$;
+                    		 	 do language 'plpgsql' $bla$ declare begin perform null; end; $bla$;

@@ -10,6 +10,7 @@ int main(int argc, char* argv[]) {
 
         configuration.parseCommandline(argc,argv);
         std::vector<std::string> tokens = filereader.readFile(configuration.getInputfilename());
-        Parser parser = Parser(tokens);
+        unsigned int position = 0;
+        Parser parser = Parser(&tokens,&position);
         parser.parse();
 }
