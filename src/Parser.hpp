@@ -14,10 +14,13 @@ class Parser {
                 bool isLanguage();
                 bool isNewline();
                 bool isPlpgsql();
+                bool isSingleLineStringLiteral();
                 bool isStringLiteral();
                 bool isWhitespace();
 
                 std::string consumeStringLiteral();
+                void skipWhitespacesAndNewlines();
+
                 static std::vector<std::string> tokens;
                 static unsigned int position;
         public:
