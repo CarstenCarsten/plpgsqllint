@@ -8,23 +8,32 @@ class Parser {
         private:
                 std::vector<Parser> children;
         protected:
+                Parser();
                 std::string token;
 
                 bool isDo();
+                bool isEndDollarQuote(std::string startDollarQuote);
+                bool isEscapedSingleLineStringLiteral();
                 bool isLanguage();
+                bool isMultiLineStringLiteral();
                 bool isNewline();
                 bool isPlpgsql();
                 bool isSingleLineStringLiteral();
                 bool isStringLiteral();
+                bool isVariableName();
                 bool isWhitespace();
 
-                std::string consumeStringLiteral();
+                bool hasNext();
+                void next();
+                void before();
+
+                std::string readStringLiteral();
+                std::string readDollarQuote();
                 void skipWhitespacesAndNewlines();
 
                 static std::vector<std::string> tokens;
                 static unsigned int position;
         public:
-                Parser();  // made public because of easier child-creation
                 Parser(std::vector<std::string> tokensvector);
                 void parse();
 };

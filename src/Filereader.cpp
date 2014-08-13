@@ -67,10 +67,10 @@ std::vector<std::string> Filereader::readFile(std::string filename) {
                 }
                 prev = ch;
         }
-//        std::cout << token << std::endl;
+        // add the last token to the list
         if(token.length() > 0) {
                 tokens.push_back(token);
-        }    
+        }
 
         return tokens;
 }
