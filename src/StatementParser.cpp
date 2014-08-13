@@ -1,4 +1,4 @@
-#include "Parser.hpp"
+#include "StatementParser.hpp"
 
 #include "DoParser.hpp"
 
@@ -6,19 +6,19 @@
 
 #include <iostream>
 
-Parser::Parser() {
+StatementParser::StatementParser() {
 }
 
-Parser::Parser(std::vector<std::string> * tokens, unsigned int * pos ) {
+StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int * pos ) {
         this->tokens = tokens;
         this->pos    = pos;
 }
 
-bool Parser::isDo() {
+bool StatementParser::isDo() {
         return boost::iequals("DO", (*tokens)[*pos]);
 }
 
-bool Parser::isEndDollarQuote(std::string startDollarQuote) {
+bool StatementParser::isEndDollarQuote(std::string startDollarQuote) {
         std::string endDollarQuote = readDollarQuote();
         before();
         before();
@@ -26,7 +26,7 @@ bool Parser::isEndDollarQuote(std::string startDollarQuote) {
         return startDollarQuote.compare(endDollarQuote) == 0;
 }
 
-bool Parser::isEscapedSingleLineStringLiteral() {
+bool StatementParser::isEscapedSingleLineStringLiteral() {
         bool result = false;
         if(hasNext() && isSingleLineStringLiteral()) {
                 next();
@@ -38,51 +38,51 @@ bool Parser::isEscapedSingleLineStringLiteral() {
         return result;
 }
 
-bool Parser::isLanguage() {
+bool StatementParser::isLanguage() {
         return boost::iequals("LANGUAGE", (*tokens)[*pos]);
 }
 
-bool Parser::isMultiLineStringLiteral() {
+bool StatementParser::isMultiLineStringLiteral() {
         return (*tokens)[*pos].compare("$") == 0;
 }
 
-bool Parser::isNewline() {
+bool StatementParser::isNewline() {
         return (*tokens)[*pos].compare("\r\n") == 0 || (*tokens)[*pos].compare("\n") == 0;
 }
 
-bool Parser::isPlpgsql() {
+bool StatementParser::isPlpgsql() {
         return boost::iequals("PLPGSQL", (*tokens)[*pos]);
 }
 
-bool Parser::isSingleLineStringLiteral() {
+bool StatementParser::isSingleLineStringLiteral() {
         return (*tokens)[*pos].compare("'") == 0;
 }
 
-bool Parser::isStringLiteral() {
+bool StatementParser::isStringLiteral() {
         return isMultiLineStringLiteral() || isSingleLineStringLiteral();
 }
 
-bool Parser::isVariableName() {
+bool StatementParser::isVariableName() {
         return (*tokens)[*pos].find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") == std::string::npos;
 }
 
-bool Parser::isWhitespace() {
+bool StatementParser::isWhitespace() {
         return (*tokens)[*pos].find_first_not_of(" \t") == std::string::npos;
 }
 
-bool Parser::hasNext() {
+bool StatementParser::hasNext() {
         return *pos < tokens->size();
 }
 
-void Parser::next() {
+void StatementParser::next() {
         *pos = *pos + 1;
 }
 
-void Parser::before() {
+void StatementParser::before() {
         *pos = *pos - 1;
 }
 
-std::string Parser::readStringLiteral() {
+std::string StatementParser::readStringLiteral() {
         std::string stringLiteralContent;
         if(hasNext() && isSingleLineStringLiteral()) {
                 next();
@@ -115,7 +115,7 @@ std::string Parser::readStringLiteral() {
         return stringLiteralContent;
 }
 
-std::string Parser::readDollarQuote() {
+std::string StatementParser::readDollarQuote() {
         std::string dollarQuote;
         if(hasNext() && isMultiLineStringLiteral()) {
                 dollarQuote.append((*tokens)[*pos]);
@@ -138,13 +138,13 @@ std::string Parser::readDollarQuote() {
         return dollarQuote;
 }
 
-void Parser::skipWhitespacesAndNewlines() {
+void StatementParser::skipWhitespacesAndNewlines() {
         while(hasNext() && (isWhitespace() || isNewline())) {
                 next();
         }
 }
 
-void Parser::parse() {
+void StatementParser::parse() {
         while(hasNext()) {        
                 if(isWhitespace()) {
                         // NOOP

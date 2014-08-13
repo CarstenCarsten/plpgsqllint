@@ -1,14 +1,14 @@
-#ifndef PARSER_HPP
-#define PARSER_HPP
+#ifndef STATEMENTPARSER_HPP
+#define STATEMENTPARSER_HPP
 
 #include <string>
 #include <vector>
 
-class Parser {
+class StatementParser {
         private:
-                std::vector<Parser> children;
+                std::vector<StatementParser> children;
         protected:
-                Parser();
+                StatementParser();
 
                 bool isDo();
                 bool isEndDollarQuote(std::string startDollarQuote);
@@ -33,7 +33,7 @@ class Parser {
                 std::vector<std::string> * tokens;
                 unsigned int * pos;
         public:
-                Parser(std::vector<std::string> * tokens, unsigned int * pos);
+                StatementParser(std::vector<std::string> * tokens, unsigned int * pos);
                 void parse();
 };
 

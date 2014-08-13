@@ -1,6 +1,6 @@
 #include "Configuration.hpp"
 #include "Filereader.hpp"
-#include "Parser.hpp"
+#include "StatementParser.hpp"
 
 #include <iostream>
 
@@ -11,6 +11,6 @@ int main(int argc, char* argv[]) {
         configuration.parseCommandline(argc,argv);
         std::vector<std::string> tokens = filereader.readFile(configuration.getInputfilename());
         unsigned int position = 0;
-        Parser parser = Parser(&tokens,&position);
-        parser.parse();
+        StatementParser statementParser = StatementParser(&tokens,&position);
+        statementParser.parse();
 }

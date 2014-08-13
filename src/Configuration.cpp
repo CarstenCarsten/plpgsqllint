@@ -21,21 +21,21 @@ void Configuration::parseCommandline(int argc, char* argv[]) {
                 po::notify(vm);
 
                 if (vm.count("help")) {
-                        std::cout << desc << "\n";
+                        std::cout << desc << std::endl;
                         exit(0);
                 }
 
                 if (vm.count("filename")) {
                         inputfilename = vm["filename"].as<std::string>();
                 } else {
-                        std::cout << "input filename was not set.\n";
+                        std::cout << "input filename was not set." << std::endl;
                         exit(1);
                 }
         } catch(std::exception& e) {
-                std::cerr << "error: " << e.what() << "\n";
+                std::cerr << "error: " << e.what() << std::endl;
                 exit(1);
         } catch(...) {
-                std::cerr << "Exception of unknown type!\n";
+                std::cerr << "Exception of unknown type!" << std::endl;
         }
 }
 

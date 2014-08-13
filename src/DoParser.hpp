@@ -1,14 +1,14 @@
 #ifndef DOPARSER_HPP
 #define DOPARSER_HPP
 
-#include "Parser.hpp"
+#include "StatementParser.hpp"
 
 #include <string>
 #include <vector>
 
-class DoParser: public Parser {
+class DoParser: public StatementParser {
         private:
-                std::vector<Parser> children;
+                std::vector<StatementParser> children;
         protected:
         public:
                 DoParser(std::vector<std::string> * tokens, unsigned int * pos);
