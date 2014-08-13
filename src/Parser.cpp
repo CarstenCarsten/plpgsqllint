@@ -16,27 +16,27 @@ Parser::Parser(std::vector<std::string> tokensvector) {
         tokens = tokensvector;
 }
 
-bool Parser::isDo(std::string input) {
-        return boost::iequals("DO", input);
+bool Parser::isDo() {
+        return boost::iequals("DO", token);
 }
 
-bool Parser::isLanguage(std::string input) {
-        return boost::iequals("LANGUAGE", input);
+bool Parser::isLanguage() {
+        return boost::iequals("LANGUAGE", token);
 }
 
-bool Parser::isNewline(std::string input) {
-        return input.compare("\r\n") == 0 || input.compare("\n") == 0;
+bool Parser::isNewline() {
+        return token.compare("\r\n") == 0 || token.compare("\n") == 0;
 }
 
-bool Parser::isPlpgsql(std::string input) {
-        return boost::iequals("PLPGSQL", input);
+bool Parser::isPlpgsql() {
+        return boost::iequals("PLPGSQL", token);
 }
-bool Parser::isStringLiteral(std::string input) {
-        return input.compare("$") == 0 || input.compare("'") == 0;
+bool Parser::isStringLiteral() {
+        return token.compare("$") == 0 || token.compare("'") == 0;
 }
 
-bool Parser::isWhitespace(std::string input) {
-        return input.find_first_not_of(" \t") == std::string::npos;
+bool Parser::isWhitespace() {
+        return token.find_first_not_of(" \t") == std::string::npos;
 }
 
 std::string Parser::consumeStringLiteral() {
@@ -45,11 +45,11 @@ std::string Parser::consumeStringLiteral() {
 
 void Parser::parse() {
         while(position < tokens.size()) {
-                std::string token = tokens[position++];
+                token = tokens[position++];
         
-                if(isWhitespace(token)) {
+                if(isWhitespace()) {
                         // NOOP
-                } else if(isDo(token)) {
+                } else if(isDo()) {
                         DoParser doParser;
                         children.push_back(doParser);
                         doParser.parse();

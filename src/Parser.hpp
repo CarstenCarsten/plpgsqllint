@@ -8,12 +8,14 @@ class Parser {
         private:
                 std::vector<Parser> children;
         protected:
-                bool isDo(std::string input);
-                bool isLanguage(std::string input);
-                bool isNewline(std::string input);
-                bool isPlpgsql(std::string input);
-                bool isStringLiteral(std::string input);
-                bool isWhitespace(std::string input);
+                std::string token;
+
+                bool isDo();
+                bool isLanguage();
+                bool isNewline();
+                bool isPlpgsql();
+                bool isStringLiteral();
+                bool isWhitespace();
 
                 std::string consumeStringLiteral();
                 static std::vector<std::string> tokens;
