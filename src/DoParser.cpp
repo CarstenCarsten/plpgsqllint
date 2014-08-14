@@ -1,12 +1,8 @@
 #include "DoParser.hpp"
 
-#include <iostream>
+#include "CodeDoParser.hpp"
 
-DoParser::DoParser(std::vector<std::string> * tokens, unsigned int * pos, unsigned int * token_length) {
-        this->tokens = tokens;
-        this->pos = pos;
-        this->token_length = token_length;
-}
+#include <iostream>
 
 void DoParser::parse() {
         next();
@@ -38,8 +34,13 @@ void DoParser::parse() {
         } else if (hasNext() && isStringLiteral()) {
                 // TODO
                 // 1. get the string literal
-                // 2. in case of single line convert '' to '
-                // 3. create a new Parser Object with all the tokens in the middle
+                // 1a) if is singlelinestringlieral
+                CodeDoParser codeDoParser(tokens,pos,12);
+                codeDoParser.single_line_string_literal_level = single_line_string_literal_level + 1;
+                // 2. find the end stringliteral, it is the same dollar quote that matches
+                // 3. 
+                // 4. create a new parser, set the end to the stringliteral end
+                // 5. check for stringliteral, it should be now at position, if not, error
         }
       //  std::cout << tokens[position++];
 }

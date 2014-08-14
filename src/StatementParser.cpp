@@ -9,10 +9,11 @@
 StatementParser::StatementParser() {
 }
 
-StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int * pos,  unsigned int * token_length ) {
+StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int * pos,  unsigned int token_length ) {
         this->tokens       = tokens;
         this->pos          = pos;
         this->token_length = token_length;
+        this->single_line_string_literal_level = 1;
 }
 
 bool StatementParser::isDo() {
@@ -29,6 +30,9 @@ bool StatementParser::isEndDollarQuote(std::string startDollarQuote) {
 
 bool StatementParser::isEscapedSingleLineStringLiteral() {
         bool result = false;
+        // TODO an escaped single line string literal is single_line_string_literal_level
+        //      times two times the uptick
+
         if(hasNext() && isSingleLineStringLiteral()) {
                 next();
                 if(hasNext() && isSingleLineStringLiteral()) {
@@ -56,6 +60,8 @@ bool StatementParser::isPlpgsql() {
 }
 
 bool StatementParser::isSingleLineStringLiteral() {
+        // TODO a single line string literal is single_line_string_literal_level
+        //      times the uptick
         return (*tokens)[*pos].compare("'") == 0;
 }
 
@@ -72,7 +78,7 @@ bool StatementParser::isWhitespace() {
 }
 
 bool StatementParser::hasNext() {
-        return *pos < *token_length;
+        return *pos < token_length;
 }
 
 void StatementParser::next() {
