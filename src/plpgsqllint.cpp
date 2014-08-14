@@ -11,6 +11,7 @@ int main(int argc, char* argv[]) {
         configuration.parseCommandline(argc,argv);
         std::vector<std::string> tokens = filereader.readFile(configuration.getInputfilename());
         unsigned int position = 0;
-        StatementParser statementParser = StatementParser(&tokens,&position);
+        unsigned int token_length = tokens.size();
+        StatementParser statementParser = StatementParser(&tokens, &position, &token_length);
         statementParser.parse();
 }

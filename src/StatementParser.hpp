@@ -32,8 +32,9 @@ class StatementParser {
 
                 std::vector<std::string> * tokens;
                 unsigned int * pos;
+                unsigned int * token_length;
         public:
-                StatementParser(std::vector<std::string> * tokens, unsigned int * pos);
+                StatementParser(std::vector<std::string> * tokens, unsigned int * pos, unsigned int * token_length);
                 void parse();
 };
 

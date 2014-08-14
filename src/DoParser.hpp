@@ -11,7 +11,8 @@ class DoParser: public StatementParser {
                 std::vector<StatementParser> children;
         protected:
         public:
-                DoParser(std::vector<std::string> * tokens, unsigned int * pos);
+                // TODO use pass-through constructor here
+                DoParser(std::vector<std::string> * tokens, unsigned int * pos, unsigned int * token_length);
                 std::string language;
                 void parse();
 };

@@ -2,9 +2,10 @@
 
 #include <iostream>
 
-DoParser::DoParser(std::vector<std::string> * tokens, unsigned int * pos) {
+DoParser::DoParser(std::vector<std::string> * tokens, unsigned int * pos, unsigned int * token_length) {
         this->tokens = tokens;
         this->pos = pos;
+        this->token_length = token_length;
 }
 
 void DoParser::parse() {

@@ -9,9 +9,10 @@
 StatementParser::StatementParser() {
 }
 
-StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int * pos ) {
-        this->tokens = tokens;
-        this->pos    = pos;
+StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int * pos,  unsigned int * token_length ) {
+        this->tokens       = tokens;
+        this->pos          = pos;
+        this->token_length = token_length;
 }
 
 bool StatementParser::isDo() {
@@ -71,7 +72,7 @@ bool StatementParser::isWhitespace() {
 }
 
 bool StatementParser::hasNext() {
-        return *pos < tokens->size();
+        return *pos < *token_length;
 }
 
 void StatementParser::next() {
@@ -149,7 +150,10 @@ void StatementParser::parse() {
                 if(isWhitespace()) {
                         // NOOP
                 } else if(isDo()) {
-                        DoParser doParser(tokens,pos);
+                        // I don't know where the do statement ends
+                        // but there is no constraint for the do statement
+                        // so it will simply return, once parsed the statement
+                        DoParser doParser(tokens,pos, token_length);
                         children.push_back(doParser);
                         doParser.parse();
                 } else {
