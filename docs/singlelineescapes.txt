@@ -1,0 +1,41 @@
+^ - where the parser is
+1 VALID
+raise notice'';  
+            ^
+2 VALID
+raise notice' ';
+            ^
+3 VALID
+raise notice '''';
+             ^
+4 VALID
+do 'begin end';
+   ^
+5 VALID
+do 'begin do ''begin end'';end';
+             ^
+6 VALID
+do 'begin ' || 'end';
+   ^
+7 VALID
+do 'begin do ''begin end'';end';
+   ^
+8 VALID
+do 'begin do ''begin do ''''begin raise notice ''''''''''''''''; end'''';end'';end';
+             ^
+
+decision
+"on which level is the parser"
+with level the deepness of the strings inside strings is meant
+
+isItStartOfASingleLineString
+are there "level" times upticks at the current and subsequent position?
+if true, then yes else no.
+
+where does the string end?
+Look for the next "level" times upticks.
+-> works for cases 1,2,4,5,6 but not for 3,7
+
+Look for the next "level" times upticks, but skip escaped ones.
+escaped ones are level times 2 upticks.
+-> works for cases 1,2,3,4,5,6,7

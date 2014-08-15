@@ -59,10 +59,29 @@ bool StatementParser::isPlpgsql() {
         return boost::iequals("PLPGSQL", (*tokens)[*pos]);
 }
 
+// single line string literals can be escaped therefore all this
+// counting and skipping I am not sure if that is necessary
+// but currently it makes sense, at least in my mind
 bool StatementParser::isSingleLineStringLiteral() {
-        // TODO a single line string literal is single_line_string_literal_level
-        //      times the uptick
-        return (*tokens)[*pos].compare("'") == 0;
+        bool done = false;
+        unsigned int upticks = 0;
+        unsigned int runs = 0;
+     
+        while(!done && hasNext()) {
+                runs++;
+                if((*tokens)[*pos].compare("'") == 0) {
+                        upticks++;
+                } else {
+                        done = true;
+                }
+                if(runs >= single_line_string_literal_level) {
+                        done = true;
+                } else {
+                        next();
+                }
+        }
+        *pos = *pos - (runs - 1);
+        return upticks == single_line_string_literal_level;
 }
 
 bool StatementParser::isStringLiteral() {
@@ -95,7 +114,7 @@ std::string StatementParser::readStringLiteral() {
                 next();
                 while(hasNext() && !isNewline()
                       && !isSingleLineStringLiteral()
-                      && !isEscapedSingleLineStringLiteral()) {
+                      && isEscapedSingleLineStringLiteral()) {
                         stringLiteralContent.append((*tokens)[*pos]);
                         next();
                 }
