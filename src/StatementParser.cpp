@@ -29,18 +29,25 @@ bool StatementParser::isEndDollarQuote(std::string startDollarQuote) {
 }
 
 bool StatementParser::isEscapedSingleLineStringLiteral() {
-        bool result = false;
-        // TODO an escaped single line string literal is single_line_string_literal_level
-        //      times two times the uptick
+        bool done = false;
+        unsigned int upticks = 0;
+        unsigned int runs = 0;
 
-        if(hasNext() && isSingleLineStringLiteral()) {
-                next();
-                if(hasNext() && isSingleLineStringLiteral()) {
-                        result = true;
+        while(!done && hasNext()) {
+                runs++;
+                if((*tokens)[*pos].compare("'") == 0) {
+                        upticks++;
+                } else {
+                        done = true;
                 }
-                before();
+                if(runs >= (single_line_string_literal_level*2)) {
+                        done = true;
+                } else {
+                        next();
+                }
         }
-        return result;
+        *pos = *pos - (runs - 1);
+        return upticks == (single_line_string_literal_level*2);
 }
 
 bool StatementParser::isLanguage() {
@@ -108,21 +115,35 @@ void StatementParser::before() {
         *pos = *pos - 1;
 }
 
+void StatementParser::skipSingleLineStringLiteral() {
+       *pos = *pos + single_line_string_literal_level;
+}
+
+void StatementParser::skipEscapedSingleLineStringLiteral() {
+       *pos = *pos + (single_line_string_literal_level * 2);
+}
+
 std::string StatementParser::readStringLiteral() {
         std::string stringLiteralContent;
         if(hasNext() && isSingleLineStringLiteral()) {
-                next();
+                skipSingleLineStringLiteral();
                 while(hasNext() && !isNewline()
                       && !isSingleLineStringLiteral()
                       && isEscapedSingleLineStringLiteral()) {
-                        stringLiteralContent.append((*tokens)[*pos]);
-                        next();
+                        if(isEscapedSingleLineStringLiteral()) {
+                                for(unsigned int i = 0; i < single_line_string_literal_level * 2; i++) {
+                                        stringLiteralContent.append((*tokens)[*pos]);
+                                }
+                        } else {
+                                stringLiteralContent.append((*tokens)[*pos]);
+                                next();
+                        }
                 }
                 if(isNewline()) {
                         std::cout << "[ERROR  ] string literal was not ended with '" << std::endl;
                 }
                 if(hasNext() && isSingleLineStringLiteral()) {
-                        next();
+                        skipSingleLineStringLiteral();
                 } else {
                         std::cout << "[ERROR  ] expected string literal to end with '" << std::endl;
                 }

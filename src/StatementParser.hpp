@@ -29,6 +29,8 @@ class StatementParser {
                 std::string readStringLiteral();
                 std::string readDollarQuote();
                 void skipWhitespacesAndNewlines();
+                void skipSingleLineStringLiteral();
+                void skipEscapedSingleLineStringLiteral();
 
                 std::vector<std::string> * tokens;
                 unsigned int * pos;
