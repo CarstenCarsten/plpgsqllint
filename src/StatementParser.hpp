@@ -26,6 +26,8 @@ class StatementParser {
                 void next();
                 void before();
 
+                unsigned int findEndPositionOfSingleLineStringLiteral();
+
                 std::string readStringLiteral();
                 std::string readDollarQuote();
                 void skipWhitespacesAndNewlines();

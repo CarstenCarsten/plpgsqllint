@@ -123,6 +123,40 @@ void StatementParser::skipEscapedSingleLineStringLiteral() {
        *pos = *pos + (single_line_string_literal_level * 2);
 }
 
+unsigned int StatementParser::findEndPositionOfSingleLineStringLiteral() {
+        unsigned int currentPos = *pos;
+        unsigned int endSingleLineStringLiteralPos = *pos;
+        if(hasNext() && isSingleLineStringLiteral()) {
+                skipSingleLineStringLiteral();
+                while(hasNext() && !isNewline()
+                      && !isSingleLineStringLiteral()
+                      && isEscapedSingleLineStringLiteral()) {
+                        if(isEscapedSingleLineStringLiteral()) {
+                                skipEscapedSingleLineStringLiteral();
+                        } else {
+                                next();
+                        }
+                        
+                }
+                if(isNewline()) {
+                        std::cout << "[ERROR  ] string literal was not ended correctly, but instead newline" << std::endl;
+                }
+                if(hasNext() && isSingleLineStringLiteral()) {
+                        endSingleLineStringLiteralPos = *pos;
+                } else {
+                        std::cout << "[ERROR  ] expected end of single line string literal" << std::endl;
+                }
+        } else {
+                if(!hasNext()) {
+                        std::cout << "[ERROR  ] Expected a string literal, but nothing left to read" << std::endl;                
+                } else {
+                        std::cout << "[ERROR  ] Expected a string literal, but current position is no string literal" << std::endl;
+                }
+        }
+        *pos = currentPos;
+        return endSingleLineStringLiteralPos;
+}
+
 std::string StatementParser::readStringLiteral() {
         std::string stringLiteralContent;
         if(hasNext() && isSingleLineStringLiteral()) {

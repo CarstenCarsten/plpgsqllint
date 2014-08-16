@@ -1,0 +1,1 @@
+DO language'plpgsql';

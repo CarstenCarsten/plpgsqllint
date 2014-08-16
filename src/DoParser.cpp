@@ -35,6 +35,9 @@ void DoParser::parse() {
         }
         // now the codeblock MUST exist, and it must be a string literal
         if (hasNext() && isStringLiteral()) {
+                if(isSingleLineStringLiteral()) {
+                        //find end of singlelinestringliteral
+                        
                 // TODO
                 // 1. get the string literal
                 // 1a) if is singlelinestringlieral
@@ -44,6 +47,7 @@ void DoParser::parse() {
                 // 3. 
                 // 4. create a new parser, set the end to the stringliteral end
                 // 5. check for stringliteral, it should be now at position, if not, error
+                }
         } else {
                 std::cout << "[ERROR  ] code block for do could not be found." << std::endl;
         }
