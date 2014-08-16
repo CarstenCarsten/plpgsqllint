@@ -5,9 +5,10 @@
 #include <iostream>
 
 void DoParser::parse() {
+        // skip the do word.
         next();
 
-        // skip possible whitespace and newlines. the do statement was read by the parent
+        // skip possible whitespace and newlines. the do statement was read by the next above
         skipWhitespacesAndNewlines();
 
         // check for the optional language field
@@ -31,7 +32,9 @@ void DoParser::parse() {
                 } else {
                         std::cout << "[ERROR  ] language field was set, but no language parameter!" << std::endl;
                 }
-        } else if (hasNext() && isStringLiteral()) {
+        }
+        // now the codeblock MUST exist, and it must be a string literal
+        if (hasNext() && isStringLiteral()) {
                 // TODO
                 // 1. get the string literal
                 // 1a) if is singlelinestringlieral
@@ -41,6 +44,8 @@ void DoParser::parse() {
                 // 3. 
                 // 4. create a new parser, set the end to the stringliteral end
                 // 5. check for stringliteral, it should be now at position, if not, error
+        } else {
+                std::cout << "[ERROR  ] code block for do could not be found." << std::endl;
         }
       //  std::cout << tokens[position++];
 }
