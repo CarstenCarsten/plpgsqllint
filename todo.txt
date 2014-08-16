@@ -1,7 +1,15 @@
-* readStringLiteral should use findEndPositionOfSingleLineStringLiteral
+TODO
+
 * write automated tests
 * the string literal function should become their own class
 * write a print line and column method from current pos
 * write a print the SQL file from parsed tree method
 * write a error and warn log method
 * every error and every warn should have its own unique error / warn code
+* make tests out of the singlelineescapes.txt file and delete the file
+* look in the doc folder, and make tests out of it
+
+DONE
+
+* readStringLiteral should use findEndPositionOfSingleLineStringLiteral (2014-08-16)
+

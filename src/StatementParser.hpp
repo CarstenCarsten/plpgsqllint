@@ -10,6 +10,7 @@ class StatementParser {
         protected:
                 StatementParser();
 
+                bool isDeclare();
                 bool isDo();
                 bool isEndDollarQuote(std::string startDollarQuote);
                 bool isEscapedSingleLineStringLiteral();
@@ -26,13 +27,16 @@ class StatementParser {
                 void next();
                 void before();
 
+                void skipEscapedSingleLineStringLiteral();
+                void skipSingleLineStringLiteral();
+                void skipWhitespaces();
+                void skipWhitespacesAndNewlines();
+
+                unsigned int findEndPositionOfMultiLineStringLiteral();
                 unsigned int findEndPositionOfSingleLineStringLiteral();
 
                 std::string readStringLiteral();
                 std::string readDollarQuote();
-                void skipWhitespacesAndNewlines();
-                void skipSingleLineStringLiteral();
-                void skipEscapedSingleLineStringLiteral();
 
                 std::vector<std::string> * tokens;
                 unsigned int * pos;

@@ -16,15 +16,30 @@ StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int
         this->single_line_string_literal_level = 1;
 }
 
+bool StatementParser::isDeclare() {
+        return boost::iequals("DECLARE", (*tokens)[*pos]);
+}
+
 bool StatementParser::isDo() {
         return boost::iequals("DO", (*tokens)[*pos]);
 }
 
 bool StatementParser::isEndDollarQuote(std::string startDollarQuote) {
-        std::string endDollarQuote = readDollarQuote();
-        before();
-        before();
-        before();
+        unsigned int currentPos = *pos;
+        std::string endDollarQuote;
+        if(hasNext() && isMultiLineStringLiteral()) {
+                endDollarQuote.append((*tokens)[*pos]);
+                next();
+                if(hasNext() && isVariableName()) {
+                        endDollarQuote.append((*tokens)[*pos]);
+                        next();                
+                        if(hasNext() && isMultiLineStringLiteral()) {
+                                endDollarQuote.append((*tokens)[*pos]);
+                                next();
+                        } 
+                }
+        }
+        *pos = currentPos;
         return startDollarQuote.compare(endDollarQuote) == 0;
 }
 
@@ -115,12 +130,47 @@ void StatementParser::before() {
         *pos = *pos - 1;
 }
 
+void StatementParser::skipEscapedSingleLineStringLiteral() {
+       *pos = *pos + (single_line_string_literal_level * 2);
+}
+
 void StatementParser::skipSingleLineStringLiteral() {
        *pos = *pos + single_line_string_literal_level;
 }
 
-void StatementParser::skipEscapedSingleLineStringLiteral() {
-       *pos = *pos + (single_line_string_literal_level * 2);
+void StatementParser::skipWhitespaces() {
+        while(hasNext() && isWhitespace()) {
+                next();
+        }
+}
+
+void StatementParser::skipWhitespacesAndNewlines() {
+        while(hasNext() && (isWhitespace() || isNewline())) {
+                next();
+        }
+}
+
+/*
+ * This method expects that pos is on the first $
+ */
+unsigned int StatementParser::findEndPositionOfMultiLineStringLiteral() {
+        unsigned int currentPos = *pos;
+        unsigned int endingDollarQuotePos = *pos;
+        if(hasNext() && isMultiLineStringLiteral()) {
+                std::string dollarQuote = readDollarQuote();
+                do {
+                        while(hasNext() && !isMultiLineStringLiteral()) {
+                                next();
+                        }
+                } while(hasNext() && !isEndDollarQuote(dollarQuote));
+                if(isEndDollarQuote(dollarQuote)) {
+                        endingDollarQuotePos = *pos;
+                } else {
+                        std::cout << "[ERROR  ] could not find endingDollarQuote" << std::endl;
+                }
+        }
+        *pos = currentPos;
+        return endingDollarQuotePos;
 }
 
 unsigned int StatementParser::findEndPositionOfSingleLineStringLiteral() {
@@ -157,30 +207,20 @@ unsigned int StatementParser::findEndPositionOfSingleLineStringLiteral() {
         return endSingleLineStringLiteralPos;
 }
 
+/*
+ * This method expects that the position is currently on a string literal
+ * either ' oder $
+ */
 std::string StatementParser::readStringLiteral() {
         std::string stringLiteralContent;
         if(hasNext() && isSingleLineStringLiteral()) {
+                unsigned int endofSingleLineStringLiteral = findEndPositionOfSingleLineStringLiteral();
                 skipSingleLineStringLiteral();
-                while(hasNext() && !isNewline()
-                      && !isSingleLineStringLiteral()
-                      && isEscapedSingleLineStringLiteral()) {
-                        if(isEscapedSingleLineStringLiteral()) {
-                                for(unsigned int i = 0; i < single_line_string_literal_level * 2; i++) {
-                                        stringLiteralContent.append((*tokens)[*pos]);
-                                }
-                        } else {
-                                stringLiteralContent.append((*tokens)[*pos]);
-                                next();
-                        }
+                while(*pos < endofSingleLineStringLiteral) {
+                        stringLiteralContent.append((*tokens)[*pos]);
+                        next();
                 }
-                if(isNewline()) {
-                        std::cout << "[ERROR  ] string literal was not ended with '" << std::endl;
-                }
-                if(hasNext() && isSingleLineStringLiteral()) {
-                        skipSingleLineStringLiteral();
-                } else {
-                        std::cout << "[ERROR  ] expected string literal to end with '" << std::endl;
-                }
+                skipSingleLineStringLiteral();
         } else if(hasNext() && isMultiLineStringLiteral()) {
                 std::string startDollarQuote = readDollarQuote();
                 while(hasNext() && !isEndDollarQuote(startDollarQuote)) {
@@ -190,7 +230,7 @@ std::string StatementParser::readStringLiteral() {
                 if(isEndDollarQuote(startDollarQuote)) {
                         std::string endDollarQuote = readDollarQuote();
                 } else {
-                        std::cout << "[ERROR  ] could not find terminating dollar quote" << std::endl;                
+                        std::cout << "[ERROR  ] could not find terminating dollar quote for {" << startDollarQuote << "}" << std::endl;                
                 }
         }
         return stringLiteralContent;
@@ -219,11 +259,6 @@ std::string StatementParser::readDollarQuote() {
         return dollarQuote;
 }
 
-void StatementParser::skipWhitespacesAndNewlines() {
-        while(hasNext() && (isWhitespace() || isNewline())) {
-                next();
-        }
-}
 
 void StatementParser::parse() {
         while(hasNext()) {        
@@ -233,6 +268,8 @@ void StatementParser::parse() {
                         // I don't know where the do statement ends
                         // but there is no constraint for the do statement
                         // so it will simply return, once parsed the statement
+                        std::cout << "[DEBUG  ] calling do parser {" << (*tokens)[*pos] << "}" << std::endl;
+
                         DoParser doParser(tokens,pos, token_length);
                         children.push_back(doParser);
                         doParser.parse();
