@@ -10,15 +10,21 @@ class StatementParser {
         protected:
                 StatementParser();
 
+                bool isBegin();
                 bool isDeclare();
                 bool isDo();
+                bool isEnd();
                 bool isEndDollarQuote(std::string startDollarQuote);
                 bool isEscapedSingleLineStringLiteral();
                 bool isLanguage();
                 bool isMultiLineStringLiteral();
                 bool isNewline();
+                bool isNull();
+                bool isPerform();
                 bool isPlpgsql();
+                bool isSemicolon();
                 bool isSingleLineStringLiteral();
+                bool isStatement();
                 bool isStringLiteral();
                 bool isVariableName();
                 bool isWhitespace();

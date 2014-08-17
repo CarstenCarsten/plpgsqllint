@@ -1,6 +1,7 @@
 #include "StatementParser.hpp"
 
 #include "DoParser.hpp"
+#include "PerformParser.hpp"
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -16,12 +17,20 @@ StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int
         this->single_line_string_literal_level = 1;
 }
 
+bool StatementParser::isBegin() {
+        return boost::iequals("BEGIN", (*tokens)[*pos]);
+}
+
 bool StatementParser::isDeclare() {
         return boost::iequals("DECLARE", (*tokens)[*pos]);
 }
 
 bool StatementParser::isDo() {
         return boost::iequals("DO", (*tokens)[*pos]);
+}
+
+bool StatementParser::isEnd() {
+        return boost::iequals("END", (*tokens)[*pos]);
 }
 
 bool StatementParser::isEndDollarQuote(std::string startDollarQuote) {
@@ -77,8 +86,21 @@ bool StatementParser::isNewline() {
         return (*tokens)[*pos].compare("\r\n") == 0 || (*tokens)[*pos].compare("\n") == 0;
 }
 
+bool StatementParser::isNull() {
+        return boost::iequals("NULL", (*tokens)[*pos]);
+}
+
+
+bool StatementParser::isPerform() {
+        return boost::iequals("PERFORM", (*tokens)[*pos]);
+}
+
 bool StatementParser::isPlpgsql() {
         return boost::iequals("PLPGSQL", (*tokens)[*pos]);
+}
+
+bool StatementParser::isSemicolon() {
+        return (*tokens)[*pos].compare(";") == 0;
 }
 
 // single line string literals can be escaped therefore all this
@@ -104,6 +126,16 @@ bool StatementParser::isSingleLineStringLiteral() {
         }
         *pos = *pos - (runs - 1);
         return upticks == single_line_string_literal_level;
+}
+
+bool StatementParser::isStatement() {
+        if(boost::iequals("DO", (*tokens)[*pos])) {
+                return true;
+        }
+        if(boost::iequals("PERFORM", (*tokens)[*pos])) {
+                return true;
+        }
+        return false;
 }
 
 bool StatementParser::isStringLiteral() {
@@ -261,6 +293,9 @@ std::string StatementParser::readDollarQuote() {
 
 
 void StatementParser::parse() {
+        // after a statement has been executed
+        // a semicolon is allowed
+        bool wasCommandExecuted = false;
         while(hasNext()) {        
                 if(isWhitespace()) {
                         // NOOP
@@ -270,11 +305,18 @@ void StatementParser::parse() {
                         // so it will simply return, once parsed the statement
                         std::cout << "[DEBUG  ] calling do parser {" << (*tokens)[*pos] << "}" << std::endl;
 
-                        DoParser doParser(tokens,pos, token_length);
+                        DoParser doParser(tokens, pos, token_length);
                         children.push_back(doParser);
                         doParser.parse();
-                } else {
-                        std::cout << (*tokens)[*pos];
+                        wasCommandExecuted = true;
+                } else if(isPerform()) {
+                        PerformParser performParser(tokens, pos, token_length);
+                        children.push_back(performParser);
+                        performParser.parse();
+                        wasCommandExecuted = true;
+                }
+                if(hasNext() && isSemicolon() && wasCommandExecuted) {
+                        wasCommandExecuted = false;
                 }
                 next();
         }
