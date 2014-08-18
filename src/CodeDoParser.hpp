@@ -9,6 +9,7 @@
 class CodeDoParser: public StatementParser {
         private:
                 std::vector<StatementParser> children;
+                void parseBooleanExpression();
                 void readDeclare();
         protected:
         public:

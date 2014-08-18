@@ -74,6 +74,10 @@ bool StatementParser::isEscapedSingleLineStringLiteral() {
         return upticks == (single_line_string_literal_level*2);
 }
 
+bool StatementParser::isIf() {
+        return boost::iequals("IF", (*tokens)[*pos]);
+}
+
 bool StatementParser::isLanguage() {
         return boost::iequals("LANGUAGE", (*tokens)[*pos]);
 }

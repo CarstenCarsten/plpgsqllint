@@ -5,6 +5,9 @@
 void CodeDoParser::readDeclare() {
 }
 
+void CodeDoParser::parseBooleanExpression() {
+}
+
 void CodeDoParser::parse() {
         // 
         skipWhitespacesAndNewlines();
@@ -23,6 +26,8 @@ void CodeDoParser::parse() {
                 // There is no need to limit the length of the statement
                 StatementParser statementParser(tokens, pos, token_length);
                 statementParser.parse();
+        } else if(hasNext() && isIf()) {
+                parseBooleanExpression();
         }
 
         if(hasNext() && isEnd()) {

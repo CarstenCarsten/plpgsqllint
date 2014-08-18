@@ -16,6 +16,7 @@ class StatementParser {
                 bool isEnd();
                 bool isEndDollarQuote(std::string startDollarQuote);
                 bool isEscapedSingleLineStringLiteral();
+                bool isIf();
                 bool isLanguage();
                 bool isMultiLineStringLiteral();
                 bool isNewline();
