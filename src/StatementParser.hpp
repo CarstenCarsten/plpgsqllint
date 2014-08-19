@@ -11,6 +11,7 @@ class StatementParser {
                 StatementParser();
 
                 bool isBegin();
+                bool isClosingParentheses();
                 bool isDeclare();
                 bool isDo();
                 bool isEnd();
@@ -21,6 +22,7 @@ class StatementParser {
                 bool isMultiLineStringLiteral();
                 bool isNewline();
                 bool isNull();
+                bool isOpeningParentheses();
                 bool isPerform();
                 bool isPlpgsql();
                 bool isSemicolon();

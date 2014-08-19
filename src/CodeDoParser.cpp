@@ -5,7 +5,17 @@
 void CodeDoParser::readDeclare() {
 }
 
+// these are in IF conditionals, but perhaps somewhere else as well
 void CodeDoParser::parseBooleanExpression() {
+        skipWhitespacesAndNewlines();
+        if(hasNext() && isOpeningParentheses()) {
+                // inside the brackets of a 
+                parseBooleanExpression();
+                skipWhitespacesAndNewlines();
+                if(!hasNext() || !isClosingParentheses()) {
+                        std::cout << "[ERROR  ] missing closing Parentheses" << std::endl;
+                }
+        }
 }
 
 void CodeDoParser::parse() {
@@ -27,6 +37,7 @@ void CodeDoParser::parse() {
                 StatementParser statementParser(tokens, pos, token_length);
                 statementParser.parse();
         } else if(hasNext() && isIf()) {
+                next();
                 parseBooleanExpression();
         }
 
