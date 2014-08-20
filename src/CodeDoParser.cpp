@@ -14,8 +14,11 @@ void CodeDoParser::parseBooleanExpression() {
                 skipWhitespacesAndNewlines();
                 if(!hasNext() || !isClosingParentheses()) {
                         std::cout << "[ERROR  ] missing closing Parentheses" << std::endl;
+                } else {
+                        stc::cout << "[ERROR  ] Expected more input" << std::endl;
                 }
         }
+        skipWhitespacesAndNewlines();
 }
 
 void CodeDoParser::parse() {
