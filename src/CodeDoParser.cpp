@@ -11,12 +11,42 @@ void CodeDoParser::parseBooleanExpression() {
         if(hasNext() && isOpeningParentheses()) {
                 // inside the brackets of a 
                 parseBooleanExpression();
-                skipWhitespacesAndNewlines();
+//                skipWhitespacesAndNewlines();
                 if(!hasNext() || !isClosingParentheses()) {
                         std::cout << "[ERROR  ] missing closing Parentheses" << std::endl;
                 }
         }
-        skipWhitespacesAndNewlines();
+        if(hasNext() && isEquals()) {
+                next();
+        }
+        if(hasNext() && isVariableName() && !isThen()) {
+                readVariableName();
+        }
+        if(hasNext() && isThen()) {
+                return;
+        }
+        if(hasNext() && isClosingParentheses()) {
+                return;
+        }
+        if(hasNext() && isAnd()) {
+                next();
+        }
+        if(hasNext() && isOr()) {
+                next();
+        }
+        if(hasNext() && isNot()) {
+                next();
+        }
+        if(hasNext() && isDot()) {
+                next();
+        }
+        if(hasNext() && isOeffnendeEckigeKlammer()) {
+                next();
+        }
+        if(hasNext() && isSchliessendeEckigeKlammer()) {
+                next();
+        }
+//        skipWhitespacesAndNewlines();
 }
 
 void CodeDoParser::parse() {
