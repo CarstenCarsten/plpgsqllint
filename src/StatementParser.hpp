@@ -10,25 +10,33 @@ class StatementParser {
         protected:
                 StatementParser();
 
+                bool isAnd();
                 bool isBegin();
+                bool isClosingBracket();
                 bool isClosingParentheses();
                 bool isDeclare();
                 bool isDo();
+                bool isDot();
                 bool isEnd();
                 bool isEndDollarQuote(std::string startDollarQuote);
+                bool isEquals();
                 bool isEscapedSingleLineStringLiteral();
                 bool isIf();
                 bool isLanguage();
                 bool isMultiLineStringLiteral();
                 bool isNewline();
+                bool isNot();
                 bool isNull();
+                bool isOpeningBracket();
                 bool isOpeningParentheses();
+                bool isOr();
                 bool isPerform();
                 bool isPlpgsql();
                 bool isSemicolon();
                 bool isSingleLineStringLiteral();
                 bool isStatement();
                 bool isStringLiteral();
+                bool isThen();
                 bool isVariableName();
                 bool isWhitespace();
 
@@ -44,8 +52,9 @@ class StatementParser {
                 unsigned int findEndPositionOfMultiLineStringLiteral();
                 unsigned int findEndPositionOfSingleLineStringLiteral();
 
-                std::string readStringLiteral();
                 std::string readDollarQuote();
+                std::string readStringLiteral();
+                std::string readVariableName();
 
                 std::vector<std::string> * tokens;
                 unsigned int * pos;

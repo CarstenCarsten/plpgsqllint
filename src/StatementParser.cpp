@@ -17,8 +17,17 @@ StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int
         this->single_line_string_literal_level = 1;
 }
 
+bool StatementParser::isAnd() {
+        return boost::iequals("AND", (*tokens)[*pos]);
+}
+
+
 bool StatementParser::isBegin() {
         return boost::iequals("BEGIN", (*tokens)[*pos]);
+}
+
+bool StatementParser::isClosingBracket() {
+        return (*tokens)[*pos].compare("]") == 0;
 }
 
 bool StatementParser::isClosingParentheses() {
@@ -31,6 +40,10 @@ bool StatementParser::isDeclare() {
 
 bool StatementParser::isDo() {
         return boost::iequals("DO", (*tokens)[*pos]);
+}
+
+bool StatementParser::isDot() {
+        return (*tokens)[*pos].compare(".") == 0;
 }
 
 bool StatementParser::isEnd() {
@@ -54,6 +67,10 @@ bool StatementParser::isEndDollarQuote(std::string startDollarQuote) {
         }
         *pos = currentPos;
         return startDollarQuote.compare(endDollarQuote) == 0;
+}
+
+bool StatementParser::isEquals() {
+        return (*tokens)[*pos].compare("=") == 0;
 }
 
 bool StatementParser::isEscapedSingleLineStringLiteral() {
@@ -94,12 +111,24 @@ bool StatementParser::isNewline() {
         return (*tokens)[*pos].compare("\r\n") == 0 || (*tokens)[*pos].compare("\n") == 0;
 }
 
+bool StatementParser::isNot() {
+        return boost::iequals("NOT", (*tokens)[*pos]);
+}
+
 bool StatementParser::isNull() {
         return boost::iequals("NULL", (*tokens)[*pos]);
 }
 
+bool StatementParser::isOpeningBracket() {
+        return (*tokens)[*pos].compare("[") == 0;
+}
+
 bool StatementParser::isOpeningParentheses() {
         return (*tokens)[*pos].compare("(") == 0;
+}
+
+bool StatementParser::isOr() {
+        return boost::iequals("OR", (*tokens)[*pos]);
 }
 
 bool StatementParser::isPerform() {
@@ -151,6 +180,10 @@ bool StatementParser::isStatement() {
 
 bool StatementParser::isStringLiteral() {
         return isMultiLineStringLiteral() || isSingleLineStringLiteral();
+}
+
+bool StatementParser::isThen() {
+        return boost::iequals("THEN", (*tokens)[*pos]);
 }
 
 bool StatementParser::isVariableName() {
@@ -250,6 +283,29 @@ unsigned int StatementParser::findEndPositionOfSingleLineStringLiteral() {
         return endSingleLineStringLiteralPos;
 }
 
+std::string StatementParser::readDollarQuote() {
+        std::string dollarQuote;
+        if(hasNext() && isMultiLineStringLiteral()) {
+                dollarQuote.append((*tokens)[*pos]);
+                next();
+                if(hasNext() && isVariableName()) {
+                        dollarQuote.append((*tokens)[*pos]);
+                        next();                
+                        if(hasNext() && isMultiLineStringLiteral()) {
+                                dollarQuote.append((*tokens)[*pos]);
+                                next();
+                        } else {
+                                std::cout << "[ERROR  ] expected a ending dollar sign for dollar quote" << std::endl;
+                        }
+                } else {
+                        std::cout << "[ERROR  ] expected a variable name for dollar quoting" << std::endl;
+                }
+        } else {
+                std::cout << "[ERROR  ] expected a starting dollar sign for dollar quote" << std::endl;
+        }
+        return dollarQuote;
+}
+
 /*
  * This method expects that the position is currently on a string literal
  * either ' oder $
@@ -279,29 +335,10 @@ std::string StatementParser::readStringLiteral() {
         return stringLiteralContent;
 }
 
-std::string StatementParser::readDollarQuote() {
-        std::string dollarQuote;
-        if(hasNext() && isMultiLineStringLiteral()) {
-                dollarQuote.append((*tokens)[*pos]);
-                next();
-                if(hasNext() && isVariableName()) {
-                        dollarQuote.append((*tokens)[*pos]);
-                        next();                
-                        if(hasNext() && isMultiLineStringLiteral()) {
-                                dollarQuote.append((*tokens)[*pos]);
-                                next();
-                        } else {
-                                std::cout << "[ERROR  ] expected a ending dollar sign for dollar quote" << std::endl;
-                        }
-                } else {
-                        std::cout << "[ERROR  ] expected a variable name for dollar quoting" << std::endl;
-                }
-        } else {
-                std::cout << "[ERROR  ] expected a starting dollar sign for dollar quote" << std::endl;
-        }
-        return dollarQuote;
+std::string StatementParser::readVariableName() {
+        // TODO return the variable name
+        return "";
 }
-
 
 void StatementParser::parse() {
         // after a statement has been executed

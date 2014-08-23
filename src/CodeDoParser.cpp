@@ -40,10 +40,10 @@ void CodeDoParser::parseBooleanExpression() {
         if(hasNext() && isDot()) {
                 next();
         }
-        if(hasNext() && isOeffnendeEckigeKlammer()) {
+        if(hasNext() && isOpeningBracket()) {
                 next();
         }
-        if(hasNext() && isSchliessendeEckigeKlammer()) {
+        if(hasNext() && isClosingBracket()) {
                 next();
         }
 //        skipWhitespacesAndNewlines();
