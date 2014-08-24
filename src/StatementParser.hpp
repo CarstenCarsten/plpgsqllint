@@ -12,7 +12,8 @@ class StatementParser {
 
                 bool isAnd();
                 bool isBegin();
-                bool isClosingBracket();
+                bool isClosingBrackets();
+                bool isClosingChevrons();
                 bool isClosingParentheses();
                 bool isDeclare();
                 bool isDo();
@@ -27,7 +28,8 @@ class StatementParser {
                 bool isNewline();
                 bool isNot();
                 bool isNull();
-                bool isOpeningBracket();
+                bool isOpeningBrackets();
+                bool isOpeningChevrons();
                 bool isOpeningParentheses();
                 bool isOr();
                 bool isPerform();

@@ -40,12 +40,19 @@ void CodeDoParser::parseBooleanExpression() {
         if(hasNext() && isDot()) {
                 next();
         }
-        if(hasNext() && isOpeningBracket()) {
+        if(hasNext() && isOpeningBrackets()) {
                 next();
         }
-        if(hasNext() && isClosingBracket()) {
+        if(hasNext() && isClosingBrackets()) {
                 next();
         }
+        if(hasNext() && isOpeningChevrons()) {
+                next();
+        }
+        if(hasNext() && isClosingChevrons()) {
+                next();
+        }
+
 //        skipWhitespacesAndNewlines();
 }
 

@@ -26,8 +26,12 @@ bool StatementParser::isBegin() {
         return boost::iequals("BEGIN", (*tokens)[*pos]);
 }
 
-bool StatementParser::isClosingBracket() {
+bool StatementParser::isClosingBrackets() {
         return (*tokens)[*pos].compare("]") == 0;
+}
+
+bool StatementParser::isClosingChevrons() {
+        return (*tokens)[*pos].compare(">") == 0;
 }
 
 bool StatementParser::isClosingParentheses() {
@@ -119,9 +123,14 @@ bool StatementParser::isNull() {
         return boost::iequals("NULL", (*tokens)[*pos]);
 }
 
-bool StatementParser::isOpeningBracket() {
+bool StatementParser::isOpeningBrackets() {
         return (*tokens)[*pos].compare("[") == 0;
 }
+
+bool StatementParser::isOpeningChevrons() {
+        return (*tokens)[*pos].compare("<") == 0;
+}
+
 
 bool StatementParser::isOpeningParentheses() {
         return (*tokens)[*pos].compare("(") == 0;
