@@ -177,6 +177,10 @@ bool StatementParser::isSingleLineStringLiteral() {
         return upticks == single_line_string_literal_level;
 }
 
+bool StatementParser::isSlash() {
+        return (*tokens)[*pos].compare("/") == 0;        
+}
+
 bool StatementParser::isStatement() {
         if(boost::iequals("DO", (*tokens)[*pos])) {
                 return true;

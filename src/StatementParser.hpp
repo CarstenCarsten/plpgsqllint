@@ -36,6 +36,7 @@ class StatementParser {
                 bool isPlpgsql();
                 bool isSemicolon();
                 bool isSingleLineStringLiteral();
+                bool isSlash();
                 bool isStatement();
                 bool isStringLiteral();
                 bool isThen();
