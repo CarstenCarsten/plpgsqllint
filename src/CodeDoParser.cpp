@@ -52,6 +52,9 @@ void CodeDoParser::parseBooleanExpression() {
         if(hasNext() && isClosingChevrons()) {
                 next();
         }
+        if(hasNext() && isNewLine()) {
+                next();
+        }
 
 //        skipWhitespacesAndNewlines();
 }
@@ -77,6 +80,11 @@ void CodeDoParser::parse() {
         } else if(hasNext() && isIf()) {
                 next();
                 parseBooleanExpression();
+                if(hasNext() && isThen()) {
+                        next();
+                } else {
+                        std::cout << "[ERROR  ] expected THEN" << std::endl;
+                }
         }
 
         if(hasNext() && isEnd()) {
