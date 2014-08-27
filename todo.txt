@@ -8,6 +8,7 @@ TODO
 * every error and every warn should have its own unique error / warn code
 * make tests out of the singlelineescapes.txt file and delete the file
 * look in the doc folder, and make tests out of it
+* remove the is... Methods in other class
 
 DONE
 
