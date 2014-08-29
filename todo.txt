@@ -9,6 +9,7 @@ TODO
 * make tests out of the singlelineescapes.txt file and delete the file
 * look in the doc folder, and make tests out of it
 * remove the is... Methods in other class
+* compare the expected and the actual output of the tests method
 
 DONE
 
