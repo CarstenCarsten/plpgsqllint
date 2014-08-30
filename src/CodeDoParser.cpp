@@ -52,7 +52,7 @@ void CodeDoParser::parseBooleanExpression() {
         if(hasNext() && isClosingChevrons()) {
                 next();
         }
-        if(hasNext() && isNewLine()) {
+        if(hasNext() && isNewline()) {
                 next();
         }
 
