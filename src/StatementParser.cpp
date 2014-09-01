@@ -42,6 +42,10 @@ bool StatementParser::isDeclare() {
         return boost::iequals("DECLARE", (*tokens)[*pos]);
 }
 
+bool StatementParser::isDelete() {
+        return boost::iequals("DELETE", (*tokens)[*pos]);
+}
+
 bool StatementParser::isDo() {
         return boost::iequals("DO", (*tokens)[*pos]);
 }
@@ -146,6 +150,10 @@ bool StatementParser::isPerform() {
 
 bool StatementParser::isPlpgsql() {
         return boost::iequals("PLPGSQL", (*tokens)[*pos]);
+}
+
+bool StatementParser::isSelect() {
+        return boost::iequals("SELECT", (*tokens)[*pos]);
 }
 
 bool StatementParser::isSemicolon() {
@@ -375,6 +383,10 @@ void StatementParser::parse() {
                         children.push_back(performParser);
                         performParser.parse();
                         wasCommandExecuted = true;
+                } else if(isSelect()) {
+                        std::cout << "[ERROR  ] calling select parser" << std::endl;
+                } else if(isDelete()) {
+                       std::cout << "[ERROR  ] calling delete parser" << std::endl;
                 }
                 if(hasNext() && isSemicolon() && wasCommandExecuted) {
                         wasCommandExecuted = false;

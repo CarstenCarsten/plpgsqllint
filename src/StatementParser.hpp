@@ -16,6 +16,7 @@ class StatementParser {
                 bool isClosingChevrons();
                 bool isClosingParentheses();
                 bool isDeclare();
+                bool isDelete();
                 bool isDo();
                 bool isDot();
                 bool isEnd();
@@ -34,6 +35,7 @@ class StatementParser {
                 bool isOr();
                 bool isPerform();
                 bool isPlpgsql();
+                bool isSelect();
                 bool isSemicolon();
                 bool isSingleLineStringLiteral();
                 bool isSlash();
