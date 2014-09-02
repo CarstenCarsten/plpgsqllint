@@ -387,6 +387,8 @@ void StatementParser::parse() {
                         std::cout << "[ERROR  ] calling select parser" << std::endl;
                 } else if(isDelete()) {
                        std::cout << "[ERROR  ] calling delete parser" << std::endl;
+                } else if(isUpdate()) {
+                } else if(isInsert()) {
                 }
                 if(hasNext() && isSemicolon() && wasCommandExecuted) {
                         wasCommandExecuted = false;
