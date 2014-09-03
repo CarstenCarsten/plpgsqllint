@@ -24,6 +24,7 @@ class StatementParser {
                 bool isEquals();
                 bool isEscapedSingleLineStringLiteral();
                 bool isIf();
+                bool isInsert();
                 bool isLanguage();
                 bool isMultiLineStringLiteral();
                 bool isNewline();
@@ -42,6 +43,7 @@ class StatementParser {
                 bool isStatement();
                 bool isStringLiteral();
                 bool isThen();
+                bool isUpdate();
                 bool isVariableName();
                 bool isWhitespace();
 

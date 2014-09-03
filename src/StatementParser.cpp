@@ -107,6 +107,10 @@ bool StatementParser::isIf() {
         return boost::iequals("IF", (*tokens)[*pos]);
 }
 
+bool StatementParser::isInsert() {
+        return boost::iequals("INSERT", (*tokens)[*pos]);
+}
+
 bool StatementParser::isLanguage() {
         return boost::iequals("LANGUAGE", (*tokens)[*pos]);
 }
@@ -206,6 +210,11 @@ bool StatementParser::isStringLiteral() {
 bool StatementParser::isThen() {
         return boost::iequals("THEN", (*tokens)[*pos]);
 }
+
+bool StatementParser::isUpdate() {
+        return boost::iequals("UPDATE", (*tokens)[*pos]);
+}
+
 
 bool StatementParser::isVariableName() {
         return (*tokens)[*pos].find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") == std::string::npos;
