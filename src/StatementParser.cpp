@@ -38,6 +38,10 @@ bool StatementParser::isClosingParentheses() {
         return (*tokens)[*pos].compare(")") == 0;
 }
 
+bool StatementParser::isCreate() {
+        return boost::iequals("CREATE", (*tokens)[*pos]);
+}
+
 bool StatementParser::isDeclare() {
         return boost::iequals("DECLARE", (*tokens)[*pos]);
 }
@@ -398,6 +402,7 @@ void StatementParser::parse() {
                        std::cout << "[ERROR  ] calling delete parser" << std::endl;
                 } else if(isUpdate()) {
                 } else if(isInsert()) {
+                } else if(isCreate()) {
                 }
                 if(hasNext() && isSemicolon() && wasCommandExecuted) {
                         wasCommandExecuted = false;

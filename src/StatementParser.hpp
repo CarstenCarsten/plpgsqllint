@@ -15,6 +15,7 @@ class StatementParser {
                 bool isClosingBrackets();
                 bool isClosingChevrons();
                 bool isClosingParentheses();
+                bool isCreate();
                 bool isDeclare();
                 bool isDelete();
                 bool isDo();
