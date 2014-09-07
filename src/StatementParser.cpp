@@ -403,6 +403,7 @@ void StatementParser::parse() {
                 } else if(isUpdate()) {
                 } else if(isInsert()) {
                 } else if(isCreate()) {
+                } else if(isAlter()) {
                 }
                 if(hasNext() && isSemicolon() && wasCommandExecuted) {
                         wasCommandExecuted = false;
