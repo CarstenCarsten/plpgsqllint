@@ -404,6 +404,7 @@ void StatementParser::parse() {
                 } else if(isInsert()) {
                 } else if(isCreate()) {
                 } else if(isAlter()) {
+                } else if(isExecute()) {
                 }
                 if(hasNext() && isSemicolon() && wasCommandExecuted) {
                         wasCommandExecuted = false;
