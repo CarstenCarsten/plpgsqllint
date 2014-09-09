@@ -401,10 +401,15 @@ void StatementParser::parse() {
                 } else if(isDelete()) {
                        std::cout << "[ERROR  ] calling delete parser" << std::endl;
                 } else if(isUpdate()) {
+                        // TODO create update parser here
                 } else if(isInsert()) {
+                        // TODO create insert parser here
                 } else if(isCreate()) {
+                        // TODO create create parser here
                 } else if(isAlter()) {
+                        // TODO create alter parser here
                 } else if(isExecute()) {
+                        // TODO create execute parser here
                 }
                 if(hasNext() && isSemicolon() && wasCommandExecuted) {
                         wasCommandExecuted = false;
