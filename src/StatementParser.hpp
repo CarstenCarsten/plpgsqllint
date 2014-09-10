@@ -10,6 +10,7 @@ class StatementParser {
         protected:
                 StatementParser();
 
+                bool isAlter();
                 bool isAnd();
                 bool isBegin();
                 bool isClosingBrackets();
@@ -24,6 +25,7 @@ class StatementParser {
                 bool isEndDollarQuote(std::string startDollarQuote);
                 bool isEquals();
                 bool isEscapedSingleLineStringLiteral();
+                bool isExecute();
                 bool isIf();
                 bool isInsert();
                 bool isLanguage();

@@ -17,6 +17,10 @@ StatementParser::StatementParser(std::vector<std::string> * tokens, unsigned int
         this->single_line_string_literal_level = 1;
 }
 
+bool StatementParser::isAlter() {
+        return boost::iequals("ALTER", (*tokens)[*pos]);
+}
+
 bool StatementParser::isAnd() {
         return boost::iequals("AND", (*tokens)[*pos]);
 }
@@ -105,6 +109,10 @@ bool StatementParser::isEscapedSingleLineStringLiteral() {
         }
         *pos = *pos - (runs - 1);
         return upticks == (single_line_string_literal_level*2);
+}
+
+bool StatementParser::isExecute() {
+        return boost::iequals("EXECUTE", (*tokens)[*pos]);
 }
 
 bool StatementParser::isIf() {
