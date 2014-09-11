@@ -8,9 +8,9 @@ class Logger {
         private:
         protected:
         public:
-                void error();
-                void warn();
-                void debug();
+                void error(std::vector<std::string> * tokens, unsigned int * pos);
+                void warn(std::vector<std::string> * tokens, unsigned int * pos);
+                void debug(std::vector<std::string> * tokens, unsigned int * pos);
 };
 
 #endif
