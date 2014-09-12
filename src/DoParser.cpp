@@ -60,6 +60,7 @@ void DoParser::parse() {
                                 std::cout << "[ERROR  ] expected end of stringliteral" << std::endl;
                         }
                         skipSingleLineStringLiteral();
+                        std::cout << "[DEBUG  ] single line string literal" << std::endl;
                 } else if (isMultiLineStringLiteral()) {
                         unsigned int endpos = findEndPositionOfMultiLineStringLiteral();
                         std::string beginningDollarQuote = readDollarQuote();
